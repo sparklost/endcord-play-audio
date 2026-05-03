@@ -12,7 +12,7 @@ support_media = (
 assert support_media, "This extension doesn't work with endcord-lite"
 
 EXT_NAME = "Play Audio"
-EXT_VERSION = "0.1.0"
+EXT_VERSION = "0.1.1"
 EXT_ENDCORD_VERSION = "1.5.0"
 EXT_DESCRIPTION = "An extension that adds commands for playing audio files in voice call and as voice message"
 EXT_SOURCE = "https://github.com/sparklost/endcord-play-audio"
@@ -66,7 +66,7 @@ class Extension:
                 path = os.path.join(self.base_path, path)
             if not os.path.exists(path):
                 self.app.update_extra_line(f"Specified file not found: {path}")
-                return
+                return True
             self.app.update_extra_line("Converting audio file")
             save_path = os.path.join(os.path.expanduser(peripherals.temp_path), "send-audio-message.ogg")
             import soundfile
@@ -92,35 +92,38 @@ class Extension:
                 self.app.update_extra_line("Network error.")
             if os.path.exists(save_path):
                 os.remove(save_path)
-
-        if command_text.startswith("voice_play_audio_file"):
-            if not (self.app.voice_gateway and self.app.in_call):
-                return
-            path = command_text[22:]
-            path = os.path.expanduser(path)
-            if not path:
-                self.app.voice_gateway.stop_file_playback()
-                return
-            if self.base_path and not os.path.exists(path):
-                path = os.path.join(self.base_path, path)
-            if not os.path.exists(path):
-                self.app.update_extra_line(f"Specified file not found: {path}")
-                return
-            self.app.voice_gateway.play_audio_file(path, mix=True)
+            return True
 
         if command_text.startswith("voice_play_audio_file_nomix"):
             if not (self.app.voice_gateway and self.app.in_call):
-                return
+                return True
             path = command_text[28:]
             path = os.path.expanduser(path)
             if not path:
                 self.app.voice_gateway.stop_file_playback()
-                return
+                return True
             if self.base_path and not os.path.exists(path):
                 path = os.path.join(self.base_path, path)
             if not os.path.exists(path):
                 self.app.update_extra_line(f"Specified file not found: {path}")
-                return
+                return True
             self.app.voice_gateway.play_audio_file(path, mix=False)
+            return True
+
+        if command_text.startswith("voice_play_audio_file"):
+            if not (self.app.voice_gateway and self.app.in_call):
+                return True
+            path = command_text[22:]
+            path = os.path.expanduser(path)
+            if not path:
+                self.app.voice_gateway.stop_file_playback()
+                return True
+            if self.base_path and not os.path.exists(path):
+                path = os.path.join(self.base_path, path)
+            if not os.path.exists(path):
+                self.app.update_extra_line(f"Specified file not found: {path}")
+                return True
+            self.app.voice_gateway.play_audio_file(path, mix=True)
+            return True
 
         return False
