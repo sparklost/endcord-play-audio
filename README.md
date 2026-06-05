@@ -6,7 +6,7 @@ Commands:
 - `voice_play_audio_file_nomix *[path]` - play audio file while in voice call with pausing microphone audio.
 
 ## Installing
-See [official extensions documentation](https://github.com/sparklost/endcord/blob/main/extensions.md#installing-extensions) for installing instructions.
+See [official extensions documentation](https://github.com/sparklost/endcord/blob/main/docs/extensions.md#installing-extensions) for installing instructions.
 Available options:
 - Git clone into `Extensions` directory located in endcord config directory.
 - Run `endcord -i https://github.com/sparklost/endcord-play-audio`

@@ -5,9 +5,8 @@ import os
 from endcord import peripherals
 
 support_media = (
-    importlib.util.find_spec("PIL") is not None and
     importlib.util.find_spec("av") is not None and
-    importlib.util.find_spec("nacl") is not None
+    importlib.util.find_spec("PIL") is not None
 )
 assert support_media, "This extension doesn't work with endcord-lite"
 
